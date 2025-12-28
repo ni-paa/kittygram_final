@@ -16,19 +16,19 @@ services:
     image: katomy/kittygram_backend # Качаем с Docker Hub
     env_file: .env
     volumes:
-      - static_volume:/backend_static
+      - static:/backend_static
       - media:/media
   frontend:
     image: katomy/kittygram_frontend  # Качаем с Docker Hub
     env_file: .env
     command: cp -r /app/build/. /frontend_static/
     volumes:
-      - static_volume:/frontend_static
+      - static:/frontend_static
   gateway:
     image: katomy/kittygram_gateway  # Качаем с Docker Hub
     env_file: .env
     volumes:
-      - static_volume:/staticfiles/
+      - static:/static/
       - media:/media
     ports:
       - 9000:80
