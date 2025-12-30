@@ -18,6 +18,7 @@ services:
     volumes:
       - static_volume:/backend_static
       - media:/media
+    command: sh -c "python manage.py migrate && python manage.py collectstatic --noinput && gunicorn --bind 0.0.0.0:9000 kittygram_backend.wsgi"
   frontend:
     image: katomy/kittygram_frontend  # Качаем с Docker Hub
     env_file: .env
