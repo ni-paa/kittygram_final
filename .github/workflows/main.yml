@@ -208,8 +208,7 @@ jobs:
           **Деплой успешно выполнен!**
 
           *Статус*: ${{ job.status }}
-          *Репозиторий*: ${{ github.repository }}
-          *Коммит*: ${{ github.event.head_commit.message }}
-          *Workflow*: [#${{ github.run_number }}](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }})
+          *Запушил*: ${{ github.actor }}
+          *Коммит*: https://github.com/${{ github.repository }}/commit/${{github.sha}}
 
           ${{ job.status == 'success' && 'Всё прошло успешно!' || 'Произошла ошибка!' }}
