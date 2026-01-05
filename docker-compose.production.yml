@@ -32,7 +32,7 @@ services:
     image: katomy/kittygram_gateway  # Качаем с Docker Hub
     env_file: .env
     volumes:
-      - static:/staticfiles/
+      - static:/static/
       - media:/media/
     ports:
       - 9000:80
