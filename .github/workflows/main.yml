@@ -178,8 +178,6 @@ jobs:
           username: ${{ secrets.USER }}
           key: ${{ secrets.SSH_KEY }}
           passphrase: ${{ secrets.SSH_PASSPHRASE }}
-          # Параметр script передаёт в action appleboy/ssh-action команды,
-          # которые нужно выполнить на сервере,
           script: |
             cd kittygram
             # Выполняет pull образов с Docker Hub
@@ -190,10 +188,11 @@ jobs:
             # Выполняет миграции и сбор статики
             sudo docker compose -f docker-compose.production.yml exec backend python manage.py migrate
             sudo docker compose -f docker-compose.production.yml exec backend python manage.py collectstatic
-            sudo docker compose -f docker-compose.production.yml exec backend cp -r /app/collected_static/. /static/
+            sudo docker compose -f docker-compose.production.yml exec backend cp -r /app/collected_static/. /static/static/
 
 
   send_message:
+    name: Notify in Telegramm
     runs-on: ubuntu-latest
     needs: deploy
     steps:
@@ -202,4 +201,15 @@ jobs:
       with:
         to: ${{ secrets.TELEGRAM_TO }}
         token: ${{ secrets.TELEGRAM_TOKEN }}
-        message: Деплой успешно выполнен!%0AАвтор коммита: ${{ github.actor }}%0AСообщение коммита: ${{ github.event.commits[0].message }}%0AСсылка: https://github.com/${{ github.repository }}/commit/${{ github.sha }}"
+        message: |
+          **Деплой успешно выполнен!**
+
+          • **Статус**: ${{ job.status }}
+          • **Репозиторий**: ${{ github.repository }}
+          • **Ветка**: `${GITHUB_REF_NAME}` (`$(echo $GITHUB_SHA | cut -c1-7)`)
+          • **Коммит**: ${{ github.event.head_commit.message }}
+          • **Время**: ${{ steps.set-time.outputs.current-time }}
+          • **Workflow**: [#${{ github.run_number }}](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }})
+
+          ${{ job.status == 'success' && 'Всё прошло успешно!' || 'Произошла ошибка!' }}
+        parse_mode: markdown
