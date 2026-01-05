@@ -4,10 +4,9 @@ volumes:
   static:
   media:
 
-# Всё отличие — заменяем build на image и указываем, какой образ использовать
 services:
   db:
-    image: postgres:13.10
+    image: postgres:13
     env_file: .env
     volumes:
       - pg_data:/var/lib/postgresql/data
@@ -32,7 +31,7 @@ services:
     image: katomy/kittygram_gateway  # Качаем с Docker Hub
     env_file: .env
     volumes:
-      - static:/static/
+      - static:/staticfiles/
       - media:/media/
     ports:
       - 9000:80
