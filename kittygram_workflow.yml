@@ -10,9 +10,9 @@ jobs:
       postgres:
         image: postgres:13.10
         env:
-          POSTGRES_USER: django_user
-          POSTGRES_PASSWORD: django_password
-          POSTGRES_DB: django_db
+          POSTGRES_USER: kittygram_user
+          POSTGRES_PASSWORD: kittygram_password
+          POSTGRES_DB: kittygram
         ports:
           - 5432:5432
         # Эта конструкция описывает проверку готовности сервиса postgres
@@ -40,9 +40,9 @@ jobs:
     - name: Test with flake8 and django tests
       # Добавляем env-переменные для доступа к БД
       env:
-        POSTGRES_USER: django_user
-        POSTGRES_PASSWORD: django_password
-        POSTGRES_DB: django_db
+        POSTGRES_USER: kittygram_user
+        POSTGRES_PASSWORD: kittygram_password
+        POSTGRES_DB: kittygram
         # Сервер БД запущен в Docker, но его порт проброшен на хост
         # Поэтому подключаемся к 127.0.0.1:5432
         DB_HOST: 127.0.0.1
@@ -104,7 +104,7 @@ jobs:
           # Параметр push: true указывает, что образ нужно не только собрать,
           # но и отправить на Docker Hub
           push: true
-          tags: ${{ secrets.DOCKER_USERNAME }}/kitty_backend:latest
+          tags: ${{ secrets.DOCKER_USERNAME }}/kittygram_backend:latest
 
   build_frontend_and_push_to_docker_hub:
     name: Push [frontend] Docker image
@@ -125,7 +125,7 @@ jobs:
         with:
           context: ./frontend/
           push: true
-          tags: ${{ secrets.DOCKER_USERNAME }}/kitty_frontend:latest
+          tags: ${{ secrets.DOCKER_USERNAME }}/kittygram_frontend:latest
 
   build_gateway_and_push_to_docker_hub:
     name: Push [gateway] Docker image
@@ -148,7 +148,7 @@ jobs:
         with:
           context: ./nginx/
           push: true
-          tags: ${{ secrets.DOCKER_USERNAME }}/kitty_gateway:latest
+          tags: ${{ secrets.DOCKER_USERNAME }}/kittygram_gateway:latest
 
 
   deploy:
@@ -189,9 +189,9 @@ jobs:
             sudo docker compose -f docker-compose.production.yml down
             sudo docker compose -f docker-compose.production.yml up -d
             # Выполняет миграции и сбор статики
-            sudo docker compose -f docker-compose.production.yml exec kitty_backend python manage.py migrate
-            sudo docker compose -f docker-compose.production.yml exec kitty_backend python manage.py collectstatic
-            sudo docker compose -f docker-compose.production.yml exec kitty_backend cp -r /app/collected_static/. /static/static/
+            sudo docker compose -f docker-compose.production.yml exec backend python manage.py migrate
+            sudo docker compose -f docker-compose.production.yml exec backend python manage.py collectstatic
+            sudo docker compose -f docker-compose.production.yml exec backend cp -r /app/collected_static/. /static/static/
 
 
   send_message:

@@ -10,9 +10,9 @@ jobs:
       postgres:
         image: postgres:13.10
         env:
-          POSTGRES_USER: django_user
-          POSTGRES_PASSWORD: django_password
-          POSTGRES_DB: django_db
+          POSTGRES_USER: kittygram_user
+          POSTGRES_PASSWORD: kittygram_password
+          POSTGRES_DB: kittygram
         ports:
           - 5432:5432
         # Эта конструкция описывает проверку готовности сервиса postgres
@@ -40,9 +40,9 @@ jobs:
     - name: Test with flake8 and django tests
       # Добавляем env-переменные для доступа к БД
       env:
-        POSTGRES_USER: django_user
-        POSTGRES_PASSWORD: django_password
-        POSTGRES_DB: django_db
+        POSTGRES_USER: kittygram_user
+        POSTGRES_PASSWORD: kittygram_password
+        POSTGRES_DB: kittygram
         # Сервер БД запущен в Docker, но его порт проброшен на хост
         # Поэтому подключаемся к 127.0.0.1:5432
         DB_HOST: 127.0.0.1
@@ -189,9 +189,9 @@ jobs:
             sudo docker compose -f docker-compose.production.yml down
             sudo docker compose -f docker-compose.production.yml up -d
             # Выполняет миграции и сбор статики
-            sudo docker compose -f docker-compose.production.yml exec kittygram_backend python manage.py migrate
-            sudo docker compose -f docker-compose.production.yml exec kittygram_backend python manage.py collectstatic
-            sudo docker compose -f docker-compose.production.yml exec kittygram_backend cp -r /app/collected_static/. /static/static/
+            sudo docker compose -f docker-compose.production.yml exec backend python manage.py migrate
+            sudo docker compose -f docker-compose.production.yml exec backend python manage.py collectstatic
+            sudo docker compose -f docker-compose.production.yml exec backend cp -r /app/collected_static/. /static/static/
 
 
   send_message:
