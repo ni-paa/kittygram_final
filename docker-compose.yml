@@ -6,27 +6,31 @@ volumes:
 services:
   db:
     image: postgres:13
-    container_name: bd
+    container_name: db_kitty
     env_file: .env
     volumes:
       - pg_data:/var/lib/postgresql/data
   backend:
     build: ./backend/
-    container_name: backend
+    container_name: backend_kitty
     env_file: .env
+    # command: >
+    #     bash -c "python manage.py migrate &&
+    #     python manage.py collectstatic &&
+    #     cp -r /app/collected_static/. /static/static/"
     volumes:
       - static:/static
       - media:/app/media
   frontend:
     build: ./frontend/
-    container_name: frontend
+    container_name: frontend_kitty
     env_file: .env
     command: cp -r /app/build/. /static/
     volumes:
       - static:/static
   gateway:
     build: ./nginx/
-    container_name: gateway
+    container_name: gateway_kitty
     env_file: .env
     ports:
       - 80:80
