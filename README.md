@@ -11,28 +11,28 @@
  * При GET запросе будут отправлены все котики клиенту
  * При POST запросе будет создан котик
  ```
- https://nekogram.ddns.net/api/cats
+ https://kitty.vsdb.ru/api/cats
  ```
 
  * При запросе по этому адресу можно получить, отредактировать или удалить котика
  ```
- https://nekogram.ddns.net/api/cats/pk
+ https://kitty.vsdb.ru/api/cats/pk
  ```
 
  * При GET запросе будут отправлены все достижения клиенту
  * При POST запросе будет создано новое достижение
  ```
- https://nekogram.ddns.net/api/achievements
+ https://kitty.vsdb.ru/api/achievements
  ```
 
  * При запросе по этому адресу можно получить, добавить, обновить, удалить достижения котика
  ```
- https://nekogram.ddns.net/api/achievements/pk
+ https://kitty.vsdb.ru/api/achievements/pk
  ```
 
  * Панель администратора
  ```
- https://nekogram.ddns.net/admin
+ https://kitty.vsdb.ru/admin
  ```
 
 ## Технологии:
