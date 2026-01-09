@@ -7,14 +7,14 @@ volumes:
 services:
   db:
     image: postgres:13
-    container_name: kitty_db
+    container_name: kittygram_db
     env_file: .env
     volumes:
       - pg_data:/var/lib/postgresql/data
 
   backend:
-    image: katomy/kitty_backend # Качаем с Docker Hub
-    container_name: kitty_backend
+    image: katomy/kittygram_backend # Качаем с Docker Hub
+    container_name: kittygram_backend
     env_file: .env
     depends_on:
       - db
@@ -23,16 +23,16 @@ services:
       - media:/app/media
 
   frontend:
-    image: katomy/kitty_frontend  # Качаем с Docker Hub
-    container_name: kitty_frontend
+    image: katomy/kittygram_frontend  # Качаем с Docker Hub
+    container_name: kittygram_frontend
     env_file: .env
     command: cp -r /app/build/. /static/
     volumes:
       - static:/static
 
   gateway:
-    image: katomy/kitty_gateway  # Качаем с Docker Hub
-    container_name: kitty_gateway
+    image: katomy/kittygram_gateway  # Качаем с Docker Hub
+    container_name: kittygram_gateway
     env_file: .env
     volumes:
       - static:/static

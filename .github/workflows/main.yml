@@ -104,7 +104,7 @@ jobs:
           # Параметр push: true указывает, что образ нужно не только собрать,
           # но и отправить на Docker Hub
           push: true
-          tags: ${{ secrets.DOCKER_USERNAME }}/kitty_backend:latest
+          tags: ${{ secrets.DOCKER_USERNAME }}/kittygram_backend:latest
 
   build_frontend_and_push_to_docker_hub:
     name: Push [frontend] Docker image
@@ -125,7 +125,7 @@ jobs:
         with:
           context: ./frontend/
           push: true
-          tags: ${{ secrets.DOCKER_USERNAME }}/kitty_frontend:latest
+          tags: ${{ secrets.DOCKER_USERNAME }}/kittygram_frontend:latest
 
   build_gateway_and_push_to_docker_hub:
     name: Push [gateway] Docker image
@@ -148,7 +148,7 @@ jobs:
         with:
           context: ./nginx/
           push: true
-          tags: ${{ secrets.DOCKER_USERNAME }}/kitty_gateway:latest
+          tags: ${{ secrets.DOCKER_USERNAME }}/kittygram_gateway:latest
 
 
   deploy:
@@ -189,9 +189,9 @@ jobs:
             sudo docker compose -f docker-compose.production.yml down
             sudo docker compose -f docker-compose.production.yml up -d
             # Выполняет миграции и сбор статики
-            sudo docker compose -f docker-compose.production.yml exec kitty_backend python manage.py migrate
-            sudo docker compose -f docker-compose.production.yml exec kitty_backend python manage.py collectstatic
-            sudo docker compose -f docker-compose.production.yml exec kitty_backend cp -r /app/collected_static/. /static/static/
+            sudo docker compose -f docker-compose.production.yml exec kittygram_backend python manage.py migrate
+            sudo docker compose -f docker-compose.production.yml exec kittygram_backend python manage.py collectstatic
+            sudo docker compose -f docker-compose.production.yml exec kittygram_backend cp -r /app/collected_static/. /static/static/
 
 
   send_message:
